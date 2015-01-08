@@ -1,6 +1,7 @@
 #!/bin/bash
 
-PKG=yum
+PKG_MNGR=yum
+PKG_CHECK=$PKG_MNGR list installed
 DIR=$HOME/.cmd-tools
 MY_ZSH_THEME='powerline'
 
@@ -8,25 +9,41 @@ MY_ZSH_THEME='powerline'
 cd $HOME
 
 # ZSH
-echo "Installing ZSH"
-sudo $PKG install zsh -y
-sudo chsh -s /bin/zsh $USER
+sudo $PKG_CHECK zsh >/dev/null
+if [[ $? ]]; then
+  echo "Installing ZSH"
+  sudo $PKG_MNGR install zsh -y
+  sudo chsh -s /bin/zsh $USER
+fi
 
 # Oh-My-Zsh & Powerline theme
-echo "Installing Oh-My-Zsh with ${MY_ZSH_THEME} theme"
-wget --no-check-certificate http://install.ohmyz.sh -O - | sh
-git clone https://github.com/jeremyFreeAgent/oh-my-zsh-powerline-theme && ./oh-my-zsh-powerline-theme/install_in_omz.sh 
-sed -i.bak 's/ZSH_THEME="robbyrussell"/ZSH_THEME="${MY_ZSH_THEME}"/g' $HOME/.zshrc
-echo export TERM="xterm-256color" >> $HOME/.zshrc
+if [[ -d $ZSH ]]; then
+  echo "Installing Oh-My-Zsh"
+  wget --no-check-certificate http://install.ohmyz.sh -O - | sh
+fi
+
+if [[ ! -e $ZSH/themes/$MY_ZSH_THEME.zsh-theme ]]; then
+  echo "Installing ${MY_ZSH_THEME} theme"
+  git clone https://github.com/jeremyFreeAgent/oh-my-zsh-powerline-theme && ./oh-my-zsh-powerline-theme/install_in_omz.sh 
+  sed -i.bak 's/ZSH_THEME="robbyrussell"/ZSH_THEME="${MY_ZSH_THEME}"/g' $HOME/.zshrc
+  echo export TERM="xterm-256color" >> $HOME/.zshrc
+fi
 
 # SCM Breeze
-echo "Installing SCM Breeze"
-git clone https://github.com/ndbroadbent/scm_breeze.git $HOME/.scm_breeze
-$HOME/.scm_breeze/install.sh && source $HOME/.zshrc
+if [ -e $HOME/.scm_breeze ]
+then
+  echo "Installing SCM Breeze"
+  git clone https://github.com/ndbroadbent/scm_breeze.git $HOME/.scm_breeze
+  $HOME/.scm_breeze/install.sh && source $HOME/.zshrc
+fi
 
 # Vim
-echo "Installing vim"
-sudo $PKG install vim-X11 vim-common vim-enhanced vim-minimal -y
+sudo $PKG_CHECK vim-x11 >/dev/null
+if [ $? ]
+then
+  echo "Installing Vim"
+  sudo $PKG_MNGR install vim-X11 vim-common vim-enhanced vim-minimal -y
+fi
 
 VIMRC_FILE=$HOME/.vimrc
 
@@ -40,10 +57,23 @@ cp $DIR/.vimrc $HOME
 
 # Extras
 echo "Installing extras"
+
 # Locate
-sudo $PKG install mlocate -y
-sudo updatedb
+sudo $PKG_CHECK mlocate >/dev/null
+if [ $? ]
+then
+  echo "Installing Locate" 
+  sudo $PKG_MNGR install mlocate -y
+  sudo updatedb
+fi
 
 # Man
-sudo $pkg install man -y
-exit 1
+sudo $PKG_CHECK man >/dev/null
+if [ $? ]
+then
+  echo "Installing Man"
+  sudo $PKG_MNGR install man -y
+fi
+
+exit 0
+;;
