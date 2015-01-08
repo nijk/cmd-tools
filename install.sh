@@ -46,4 +46,4 @@ sudo updatedb
 
 # Man
 sudo $pkg install man -y
-
+exit 1
