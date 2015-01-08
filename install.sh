@@ -22,15 +22,18 @@ if [[ -d $ZSH ]]; then
   wget --no-check-certificate http://install.ohmyz.sh -O - | sh
 fi
 
-if [[ ! -e $ZSH/themes/$MY_ZSH_THEME.zsh-theme ]]; then
+if [[ ! -e $ZSH/themes/$MY_ZSH_THEME.zsh-theme && ! -d $HOME/oh-my-zsh-powerline-theme ]]; then
   echo "Installing ${MY_ZSH_THEME} theme"
-  git clone https://github.com/jeremyFreeAgent/oh-my-zsh-powerline-theme && ./oh-my-zsh-powerline-theme/install_in_omz.sh 
-  sed -i.bak 's/ZSH_THEME="robbyrussell"/ZSH_THEME="${MY_ZSH_THEME}"/g' $HOME/.zshrc
-  echo export TERM="xterm-256color" >> $HOME/.zshrc
+
+  if [[ $MY_ZSH_THEME = 'powerline' && ! -d $HOME/oh-my-zsh-powerline-theme ]]; then
+    git clone https://github.com/jeremyFreeAgent/oh-my-zsh-powerline-theme && ./oh-my-zsh-powerline-theme/install_in_omz.sh 
+    sed -i.bak 's/ZSH_THEME="robbyrussell"/ZSH_THEME="${MY_ZSH_THEME}"/g' $HOME/.zshrc
+    echo export TERM="xterm-256color" >> $HOME/.zshrc
+  fi
 fi
 
 # SCM Breeze
-if [[ -e $HOME/.scm_breeze ]]; then
+if [[ ! -d $HOME/.scm_breeze ]]; then
   echo "Installing SCM Breeze"
   git clone https://github.com/ndbroadbent/scm_breeze.git $HOME/.scm_breeze
   $HOME/.scm_breeze/install.sh && source $HOME/.zshrc
