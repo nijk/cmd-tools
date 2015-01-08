@@ -9,3 +9,8 @@
 * Extras:
   * Locate
   * Man
+
+
+## Install
+
+```git clone https://github.com/nijk/cmd-tools.git ~/.cmd-tools && ./.cmd-tools/install.sh```
