@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PKG_MNGR=yum
-PKG_CHECK=$PKG_MNGR list installed
+PKG_CHECK="${PKG_MNGR} list installed"
 DIR=$HOME/.cmd-tools
 MY_ZSH_THEME='powerline'
 
