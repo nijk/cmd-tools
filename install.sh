@@ -12,8 +12,8 @@ cd $HOME
 sudo $PKG_CHECK zsh >/dev/null
 if [[ $? -eq 1 ]]; then
   echo "Installing ZSH"
-  sudo $PKG_MNGR install zsh -y
-  sudo chsh -s /bin/zsh $USER
+  sudo $PKG_MNGR -y install zsh
+  sudo su -c "chsh -s /bin/zsh ${USER}"
 fi
 
 # Oh-My-Zsh & Powerline theme
@@ -40,7 +40,7 @@ fi
 sudo $PKG_CHECK vim-x11 >/dev/null
 if [[ $? -eq 1 ]]; then
   echo "Installing Vim"
-  sudo $PKG_MNGR install vim-X11 vim-common vim-enhanced vim-minimal -y
+  sudo $PKG_MNGR -y install vim-X11 vim-common vim-enhanced vim-minimal
 fi
 
 VIMRC_FILE=$HOME/.vimrc
@@ -59,7 +59,7 @@ echo "Installing extras"
 sudo $PKG_CHECK mlocate >/dev/null
 if [[ $? -eq 1 ]]; then
   echo "Installing Locate" 
-  sudo $PKG_MNGR install mlocate -y
+  sudo $PKG_MNGR -y install mlocate
   sudo updatedb
 fi
 
@@ -67,7 +67,7 @@ fi
 sudo $PKG_CHECK man >/dev/null
 if [[ $? -eq 1 ]]; then
   echo "Installing Man"
-  sudo $PKG_MNGR install man -y
+  sudo $PKG_MNGR -y install man
 fi
 
 exit 0
