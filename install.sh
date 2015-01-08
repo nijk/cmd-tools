@@ -30,7 +30,7 @@ sudo $PKG install vim-X11 vim-common vim-enhanced vim-minimal -y
 
 VIMRC_FILE=$HOME/.vimrc
 
-if [ -e $HOME/.vimrc]
+if [ -e $HOME/.vimrc ]
 then
   VIMRC_BACKUP="${VIMRC_FILE}-original"
   echo "backing up .vimrc to ${VIMRC_BACKUP}"
@@ -41,7 +41,7 @@ cp $DIR/.vimrc $HOME
 # Extras
 echo "Installing extras"
 # Locate
-sudo $PKG install locate -y
+sudo $PKG install mlocate -y
 sudo updatedb
 
 # Man
